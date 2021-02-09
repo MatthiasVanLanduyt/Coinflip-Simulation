@@ -1,37 +1,46 @@
 import random
 
+class Coin:
+    def __init__(self):
+        pass
 
-def coinflip():
-    sides = ['Heads', 'Tails']
-    
-    random.random()
-    flip = random.choice(sides)
-    
-    # print('Flip: ' + flip)
+    def flip (self):
+        sides = ['Heads', 'Tails']
+        self.side = random.choice(sides)
+        return self.side
 
-    return flip
+    def __str__(self):
+        return self.side
 
-def simulate_coinflips (n):
-    results_sequence = []
-    results = {'Heads': 0, 'Tails': 0}
-    for index in range (n):
-        flip = coinflip()
-        results_sequence.append(flip)
-        results[flip] += 1
-        
-  
-    heads_percentage = results['Heads'] / n * 100
+class Simulation:
+    def __init__(self):
+        self.sequence = []
+        self.results = {'Heads': 0, 'Tails': 0}
+        self.percentages = {'Heads': 0, 'Tails': 0}
+        self.runs = 0
 
-    print(f'Summarized data: {results}')
-    print(f'Heads percentage: {heads_percentage}%')
+    def run (self, n):
+        self.runs = n
+        for index in range (n):
+            coin = Coin()
+            flip = coin.flip()
+            self.sequence.append(flip)
+            self.results[flip] += 1
+
+        self.percentages['Heads'] = self.results['Heads'] / n * 100
+        self.percentages['Tails'] = self.results['Tails'] / n *100
+
+    def __str__(self):
+        return (f'Simulation with {self.runs} coinflips.\nCounts: {self.results}.\n')
+
 
 def play():
     while True:
         try:
             n = int(input('How many simulations do you want to run?'))
-            print(n)
-            simulate_coinflips(n)
-            print('All done')
+            simulation = Simulation()
+            simulation.run(n)
+            print(simulation)
             break
         except:
             print('Ooops....we have some errors.')
